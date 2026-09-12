@@ -1,0 +1,35 @@
+name: Build Hisobchi APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Кодни олиш
+        uses: actions/checkout@v4
+
+      - name: Java 17 ўрнатиш
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Gradle ўрнатиш
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: APK йиғиш
+        run: gradle assembleDebug
+
+      - name: APKни сақлаш
+        uses: actions/upload-artifact@v4
+        with:
+          name: Hisobchi-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
